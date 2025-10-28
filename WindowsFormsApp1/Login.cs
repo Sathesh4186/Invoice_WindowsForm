@@ -54,6 +54,9 @@ namespace WindowsFormsApp1
                 // 🚀 You can redirect to next form here if needed:
                 // new Dashboard().Show();
                 // this.Hide();
+                Billing bill = new Billing();
+                bill.Show();
+                this.Hide();
             }
             else
             {
