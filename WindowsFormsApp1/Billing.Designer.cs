@@ -1,14 +1,15 @@
-﻿using System.Windows.Forms;
+﻿using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Windows.Forms;
 
 namespace WindowsFormsApp1
 {
     partial class Billing
     {
         private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.Label lblName, lblContact, lblEmail, lblVehicleType, lblServiceType, lblAmount, lblGst, lblTotal;
-        private System.Windows.Forms.TextBox txtName, txtContact, txtEmail, txtVehicleType, txtServiceType, txtAmount, txtGst, txtTotal;
-        private System.Windows.Forms.Button btnCalculate, btnSave, btnPreview, btnPrint, btnDownloadPDF;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private Label lblName, lblContact, lblEmail, lblVehicleType, lblServiceType, lblAmount, lblGst, lblTotal;
+        private TextBox txtName, txtContact, txtEmail, txtVehicleType, txtServiceType, txtAmount, txtGst, txtTotal;
+        private Button btnCalculate, btnPreview, btnPrint, btnDownloadPDF;
 
         protected override void Dispose(bool disposing)
         {
@@ -19,105 +20,133 @@ namespace WindowsFormsApp1
 
         private void InitializeComponent()
         {
-            this.lblName = new System.Windows.Forms.Label();
-            this.lblContact = new System.Windows.Forms.Label();
-            this.lblEmail = new System.Windows.Forms.Label();
-            this.lblVehicleType = new System.Windows.Forms.Label();
-            this.lblServiceType = new System.Windows.Forms.Label();
-            this.lblAmount = new System.Windows.Forms.Label();
-            this.lblGst = new System.Windows.Forms.Label();
-            this.lblTotal = new System.Windows.Forms.Label();
-
-            this.txtName = new System.Windows.Forms.TextBox();
-            this.txtContact = new System.Windows.Forms.TextBox();
-            this.txtEmail = new System.Windows.Forms.TextBox();
-            this.txtVehicleType = new System.Windows.Forms.TextBox();
-            this.txtServiceType = new System.Windows.Forms.TextBox();
-            this.txtAmount = new System.Windows.Forms.TextBox();
-            this.txtGst = new System.Windows.Forms.TextBox();
-            this.txtTotal = new System.Windows.Forms.TextBox();
-
-            this.btnCalculate = new System.Windows.Forms.Button();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.btnPreview = new System.Windows.Forms.Button();
-            this.btnPrint = new System.Windows.Forms.Button();
-            this.btnDownloadPDF = new System.Windows.Forms.Button();
-
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
 
-            int x1 = 50, x2 = 200, y = 40, gap = 40;
+            // 🎨 Background
+            this.Paint += (s, e) =>
+            {
+                LinearGradientBrush brush = new LinearGradientBrush(this.ClientRectangle,
+                    Color.FromArgb(240, 248, 255),
+                    Color.FromArgb(200, 220, 255),
+                    LinearGradientMode.Vertical);
+                e.Graphics.FillRectangle(brush, this.ClientRectangle);
+            };
 
-            this.lblName.Text = "Customer Name:";
-            this.lblName.Location = new System.Drawing.Point(x1, y);
-            this.txtName.Location = new System.Drawing.Point(x2, y);
+            Font labelFont = new Font("Segoe UI", 11, FontStyle.Bold);
+            Font textFont = new Font("Segoe UI", 11);
 
-            this.lblContact.Text = "Contact Number:";
-            this.lblContact.Location = new System.Drawing.Point(x1, y += gap);
-            this.txtContact.Location = new System.Drawing.Point(x2, y);
+            int labelX = 50, textX = 220, y = 50, gap = 45;
 
-            this.lblEmail.Text = "Email Address:";
-            this.lblEmail.Location = new System.Drawing.Point(x1, y += gap);
-            this.txtEmail.Location = new System.Drawing.Point(x2, y);
+            Label MakeLabel(string text, int yPos)
+            {
+                return new Label()
+                {
+                    Text = text,
+                    Location = new Point(labelX, yPos),
+                    Font = labelFont,
+                    AutoSize = true,
+                    ForeColor = Color.Navy
+                };
+            }
 
-            this.lblVehicleType.Text = "Vehicle Type:";
-            this.lblVehicleType.Location = new System.Drawing.Point(x1, y += gap);
-            this.txtVehicleType.Location = new System.Drawing.Point(x2, y);
+            TextBox MakeTextBox(int yPos)
+            {
+                return new TextBox()
+                {
+                    Location = new Point(textX, yPos),
+                    Size = new Size(200, 28),
+                    Font = textFont,
+                    BorderStyle = BorderStyle.FixedSingle,
+                    BackColor = Color.WhiteSmoke
+                };
+            }
 
-            this.lblServiceType.Text = "Service Type:";
-            this.lblServiceType.Location = new System.Drawing.Point(x1, y += gap);
-            this.txtServiceType.Location = new System.Drawing.Point(x2, y);
+            lblName = MakeLabel("Customer Name:", y);
+            txtName = MakeTextBox(y);
 
-            this.lblAmount.Text = "Amount:";
-            this.lblAmount.Location = new System.Drawing.Point(x1, y += gap);
-            this.txtAmount.Location = new System.Drawing.Point(x2, y);
+            lblContact = MakeLabel("Contact:", y += gap);
+            txtContact = MakeTextBox(y);
 
-            this.lblGst.Text = "GST (%):";
-            this.lblGst.Location = new System.Drawing.Point(x1, y += gap);
-            this.txtGst.Location = new System.Drawing.Point(x2, y);
+            lblEmail = MakeLabel("Email:", y += gap);
+            txtEmail = MakeTextBox(y);
 
-            this.lblTotal.Text = "Total:";
-            this.lblTotal.Location = new System.Drawing.Point(x1, y += gap);
-            this.txtTotal.Location = new System.Drawing.Point(x2, y);
-            this.txtTotal.ReadOnly = true;
+            lblVehicleType = MakeLabel("Vehicle Type:", y += gap);
+            txtVehicleType = MakeTextBox(y);
 
-            this.btnCalculate.Text = "Calculate";
-            this.btnCalculate.Location = new System.Drawing.Point(450, 280);
-            this.btnCalculate.Click += new System.EventHandler(this.btnCalculate_Click);
+            lblServiceType = MakeLabel("Service Type:", y += gap);
+            txtServiceType = MakeTextBox(y);
 
-            this.btnSave.Text = "Save";
-            this.btnSave.Location = new System.Drawing.Point(560, 280);
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            lblAmount = MakeLabel("Amount:", y += gap);
+            txtAmount = MakeTextBox(y);
 
-            this.btnPreview.Text = "Preview";
-            this.btnPreview.Location = new System.Drawing.Point(670, 280);
-            this.btnPreview.Click += new System.EventHandler(this.btnPreview_Click);
+            lblGst = MakeLabel("GST (%):", y += gap);
+            txtGst = MakeTextBox(y);
 
-            this.btnPrint.Text = "Print";
-            this.btnPrint.Location = new System.Drawing.Point(780, 280);
-            this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
+            lblTotal = MakeLabel("Total:", y += gap);
+            txtTotal = MakeTextBox(y);
+            txtTotal.ReadOnly = true;
+            txtTotal.BackColor = Color.LightYellow;
 
-            this.btnDownloadPDF.Text = "Download PDF";
-            this.btnDownloadPDF.Location = new System.Drawing.Point(890, 280);
-            this.btnDownloadPDF.Click += new System.EventHandler(this.btnDownloadPDF_Click);
+            // Buttons
+            btnCalculate = new Button()
+            {
+                Text = "🧮 Calculate",
+                Location = new Point(470, 80),
+                Size = new Size(150, 40),
+                BackColor = Color.SteelBlue,
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat
+            };
+            btnCalculate.FlatAppearance.BorderSize = 0;
+            btnCalculate.Click += new System.EventHandler(this.btnCalculate_Click);
 
-            this.dataGridView1.Location = new System.Drawing.Point(50, 340);
-            this.dataGridView1.Size = new System.Drawing.Size(950, 250);
+            btnPreview = new Button()
+            {
+                Text = "👁 Preview",
+                Location = new Point(470, 140),
+                Size = new Size(150, 40),
+                BackColor = Color.MediumSeaGreen,
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat
+            };
+            btnPreview.Click += new System.EventHandler(this.btnPreview_Click);
 
-            this.ClientSize = new System.Drawing.Size(1080, 620);
-            this.Controls.AddRange(new Control[] {
+            btnPrint = new Button()
+            {
+                Text = "🖨 Print",
+                Location = new Point(470, 200),
+                Size = new Size(150, 40),
+                BackColor = Color.Orange,
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat
+            };
+            btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
+
+            btnDownloadPDF = new Button()
+            {
+                Text = "⬇ PDF Download",
+                Location = new Point(470, 260),
+                Size = new Size(150, 40),
+                BackColor = Color.IndianRed,
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat
+            };
+            btnDownloadPDF.Click += new System.EventHandler(this.btnDownloadPDF_Click);
+
+            // Add controls
+            this.Controls.AddRange(new Control[]
+            {
                 lblName, txtName, lblContact, txtContact, lblEmail, txtEmail,
                 lblVehicleType, txtVehicleType, lblServiceType, txtServiceType,
                 lblAmount, txtAmount, lblGst, txtGst, lblTotal, txtTotal,
-                btnCalculate, btnSave, btnPreview, btnPrint, btnDownloadPDF,
-                dataGridView1
+                btnCalculate, btnPreview, btnPrint, btnDownloadPDF
             });
 
-            this.Text = "Billing - Sri Kumaran Electricals";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            // Form setup
+            this.Text = "Sri Kumaran - Billing";
+            this.ClientSize = new Size(670, 500);
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.StartPosition = FormStartPosition.CenterScreen;
             this.ResumeLayout(false);
         }
     }

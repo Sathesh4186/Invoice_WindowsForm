@@ -27,7 +27,7 @@ namespace WindowsFormsApp1
             // 
             // Login Form
             // 
-            string imagePath = System.IO.Path.Combine(Application.StartupPath,"Shop.jpg");
+            string imagePath = System.IO.Path.Combine(Application.StartupPath,"Shop.jpeg");
             this.BackgroundImage = System.Drawing.Image.FromFile(imagePath);
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(900, 550);
